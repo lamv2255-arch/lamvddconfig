@@ -1,4 +1,4 @@
-const config = `// ============================================================
+// ============================================================
 // Locket Remote Config Rewrite
 // Endpoint: firebaseremoteconfig.googleapis.com
 // Dùng cho: Loon / Quantumult X / Surge / Shadowrocket
@@ -26,28 +26,222 @@ obj.entries.cache_ttl_seconds = "0";
 obj.entries.client_cache_ttl_sec = "0";
 
 // ============================================================
+// LINK ANH + 3 KHUNG TEST (KHONG GIOI HAN LUOT CHUP)
+// ============================================================
+var img4Cut = "https://files.catbox.moe/k5wh1g.png";
+var imgCute = "https://files.catbox.moe/82r71p.png";
+var imgHolo = "https://files.catbox.moe/61gyxn.png";
+
+// >>> DAN LINK ANH 3 KHUNG TEST VAO 3 DONG DUOI DAY <<<
+// TAM THOI: 3 khung mau choi de test chan doan (do/xanh/lam)
+var TEST_FRAME_1_URL = "https://files.catbox.moe/mqf7gw.png"; // TEST DO
+var TEST_FRAME_2_URL = "https://files.catbox.moe/i40epc.png"; // TEST XANH
+var TEST_FRAME_3_URL = "https://files.catbox.moe/csdh2f.png"; // TEST LAM
+
+var makeFilter = function (uid, name, url, c1, c2) {
+    return {
+        uid: uid, id: uid, name: name, category: "Photobooth", prompt: uid,
+        style: "cutout", type: "normal", filterType: "cutout", overlay: true,
+        imageUrl: url, iconUrl: url, overlayImageUrl: url, overlayImageURL: url,
+        tintColor: c1, colors: [c1, c2], captureButtonColors: [c1, c2],
+        icon: { url: url, iconUrl: url, remoteImage: url, sfSymbol: "square.grid.2x2", symbol: "square.grid.2x2", emoji: "" },
+        unlocked: true, is_unlocked: true, isUnlocked: true, free: true,
+        allowsTryFilter: true, allows_try_filter: true, tryButtonEnabled: true, try_button_enabled: true,
+        requires_gold: false, requiresGold: false, is_gold: false, isGold: false,
+        is_premium: false, isPremium: false, premium: false,
+        locked: false, is_locked: false, isLocked: false,
+        unlimited: true, is_unlimited: true, isUnlimited: true,
+        limited: false, is_limited: false, isLimited: false,
+        limit: -1, usageLimit: -1, usage_limit: -1,
+        maxUses: -1, max_uses: -1,
+        remainingUses: 9999, remaining_uses: 9999, usesLeft: 9999, uses_left: 9999,
+        usedCount: 0, used_count: 0, timesUsed: 0, times_used: 0, usage: -1,
+        outputUrl: null,
+        productUrl: null,
+        textColor: "#FFFFFF",
+        referenceImages: []
+    };
+};
+
+var customPhotoboothFilters = [
+    makeFilter("photobooth_4cut", "Photobooth 4 o", img4Cut, "#FFD6E0", "#FFE4EC"),
+    makeFilter("photobooth_cute", "Photobooth Cute", imgCute, "#FFD6E0", "#FFE4EC"),
+    makeFilter("pb_holo_4cut", "Photobooth Y2K Holo", imgHolo, "#C4B5FD", "#E0E7FF")
+];
+
+var customTestFrames = [
+    makeFilter("test_frame_1", "Test Khung 1", TEST_FRAME_1_URL, "#FFB6C1", "#FF69B4"),
+    makeFilter("test_frame_2", "Test Khung 2", TEST_FRAME_2_URL, "#FFD6E0", "#FFE4EC"),
+    makeFilter("test_frame_3", "Test Khung 3", TEST_FRAME_3_URL, "#FF758C", "#FF7EB3")
+];
+
+var allFilters = customPhotoboothFilters.concat(customTestFrames);
+
+// ============================================================
+// NHOM FILTER + PICKER + CAU HINH CAMERA (format moi - an duoc khung)
+// ============================================================
+var customFilterGroups = [
+    {
+        id: "group_test",
+        title: { en: "Test Khung 🧪", vi: "Test Khung 🧪" },
+        filterIds: ["test_frame_1", "test_frame_2", "test_frame_3"],
+        filter_ids: ["test_frame_1", "test_frame_2", "test_frame_3"],
+        requires_gold: false, requiresGold: false, is_gold: false, isGold: false,
+        unlocked: true, is_unlocked: true, isUnlocked: true, free: true
+    },
+    {
+        id: "group_photobooth",
+        title: { en: "Photobooth 📸", vi: "Photobooth 📸" },
+        filterIds: ["photobooth_4cut", "photobooth_cute", "pb_holo_4cut"],
+        filter_ids: ["photobooth_4cut", "photobooth_cute", "pb_holo_4cut"],
+        requires_gold: false, requiresGold: false, is_gold: false, isGold: false,
+        unlocked: true, is_unlocked: true, isUnlocked: true, free: true
+    }
+];
+
+var customPickerFilters = [
+    "test_frame_1", "test_frame_2", "test_frame_3",
+    "photobooth_4cut", "photobooth_cute", "pb_holo_4cut",
+];
+
+var locketCameraFilterConfig = {
+    showFilterButton: true,
+    allowsCustomFilters: true,
+    referenceImageAttachmentEnabled: true,
+    sheetEnabled: true,
+    openSheetImmediately: false,
+    pickerFilters: customPickerFilters,
+    picker_filters: customPickerFilters,
+    filterGroups: customFilterGroups,
+    filter_groups: customFilterGroups,
+    sheetFilters: customFilterGroups,
+    sheet_filters: customFilterGroups,
+    remoteFilters: allFilters,
+    remote_filters: allFilters,
+    filters: allFilters,
+    show_filter_button: true,
+    allows_custom_filters: true,
+    reference_image_attachment_enabled: true,
+    sheet_enabled: true,
+    open_sheet_immediately: false
+};
+
+var locketCelebrityFilterConfig = {
+    celebrityUid: "locket_admin_custom",
+    cameraFilterConfig: locketCameraFilterConfig
+};
+
+
+
+// ============================================================
 // 1. CẤU HÌNH GOLD, FEATURE GATES & PAYWALL
 // ============================================================
 Object.assign(obj.entries, {
     feature_gates: JSON.stringify({
-        app_icon_picker: "enabled",
-        camera_roll: "enabled",
-        camera_theme: "enabled",
-        locket_views: "enabled",
-        long_captions: "enabled",
-        longer_video: "enabled",
-        unlimited_friends: "enabled",
-        priority_support: "enabled",
-        profile_badge: "enabled",
-        remove_ads: "enabled",
-        video: "enabled",
-        custom_widget_frames: "enabled",
-        streak_recovery: "enabled",
-        camera_filters: "enabled",
-        ai_filters: "enabled",
-        filters: "enabled",
-        photo_filters: "enabled"
-    }),
+            "app_icon_picker": "enabled",
+            "camera_roll": "enabled",
+            "camera_roll_video": "enabled",
+            "camera_roll_video_30s": "enabled",
+            "camera_roll_video_upload": "enabled",
+            "camera_roll_video_upload_30s": "enabled",
+            "camera_roll_longer_video": "enabled",
+            "camera_roll_longer_video_30s": "enabled",
+            "camera_theme": "enabled",
+            "locket_views": "enabled",
+            "long_captions": "enabled",
+            "longer_video": "enabled",
+            "longer_video_30s": "enabled",
+            "extended_video_30s": "enabled",
+            "photo_library_video": "enabled",
+            "photo_library_video_30s": "enabled",
+            "gallery_video": "enabled",
+            "gallery_video_30s": "enabled",
+            "can_upload_30s_video": "enabled",
+            "can_record_30s_video": "enabled",
+            "allow_longer_video_upload": "enabled",
+            "longer_video_upload": "enabled",
+            "unlimited_friends": "enabled",
+            "priority_support": "enabled",
+            "profile_badge": "enabled",
+            "profileBadge": "enabled",
+            "gold_since_badge": "enabled",
+            "goldSinceBadge": "enabled",
+            "gold_badge_profile_menu": "enabled",
+            "remove_ads": "enabled",
+            "video": "enabled",
+            "video_15s": "enabled",
+            "video_30s": "enabled",
+            "video_40s": "enabled",
+            "video_60s": "enabled",
+            "video_upload": "enabled",
+            "video_upload_30s": "enabled",
+            "custom_widget_frames": "enabled",
+            "streak_recovery": "enabled",
+            "streakRecovery": "enabled",
+            "streak_recovery_upsell": "disabled",
+            "streakRecoveryUpsell": "disabled",
+            "groups": "enabled",
+            "private_mode": "enabled",
+            "viewer_mode": "enabled",
+            "close_friends": "enabled",
+            "camera_filter_sheet": "enabled",
+            "camera_filters": "enabled",
+            "camera_filter": "enabled",
+            "camera_roll_video_30s_enabled": "enabled",
+            "allow_30s_video_upload": "enabled",
+            "allow_video_upload_30s": "enabled",
+            "extended_video_upload": "enabled",
+            "video_trimmer": "enabled",
+            "video_trim": "enabled",
+            "camera_roll_trim": "enabled",
+            "camera_roll_video_trimmer": "enabled",
+            "moment_gate": "disabled",
+            "view_moment_gate": "disabled",
+            "holiday_effects_gate": "disabled",
+            "holiday_effect_gate": "disabled",
+            "photos_of_you_gate": "disabled",
+            "holiday_effects": "enabled",
+            "holidayEffects": "enabled",
+            "photos_of_you": "enabled",
+            "photosOfYou": "enabled",
+            "can_view_holiday_effects": "enabled",
+            "can_view_photos_of_you": "enabled",
+            "allow_holiday_effects_viewing": "enabled",
+            "allow_photos_of_you_viewing": "enabled",
+            "gold_moments": "enabled",
+            "unlock_all_moments": "enabled",
+            "camera_roll_video_60s": "enabled",
+            "longer_video_60s": "enabled",
+            "extended_video_60s": "enabled",
+            "holiday_filters": "enabled",
+            "holiday_filter": "enabled",
+            "custom_widget_frame": "enabled",
+            "widget_frames": "enabled",
+            "widget_frame": "enabled",
+            "widget_frame_event": "enabled",
+            "enable_widget_frame_event": "enabled",
+            "holiday_widget_frame": "enabled",
+            "holiday_widget_frames": "enabled",
+            "holiday_frames": "enabled",
+            "camera_filters_enabled": "enabled",
+            "camera_filter_enabled": "enabled",
+            "all_filters_free": "enabled",
+            "all_filters": "enabled",
+            "all_filters_unlocked": "enabled",
+            "holiday_effect": "enabled",
+            "holiday_effects_enabled": "enabled",
+            "holiday_filters_enabled": "enabled",
+            "holiday_filter_enabled": "enabled",
+            "holiday_effect_enabled": "enabled",
+            "holiday_effects_unlocked": "enabled",
+            "holiday_filters_unlocked": "enabled",
+            "holiday_filter_unlocked": "enabled",
+            "holiday_effect_unlocked": "enabled",
+            "holiday_effects_free": "enabled",
+            "holiday_filters_free": "enabled",
+            "beta_features": "disabled",
+            "gold_camera_themes": "enabled"
+}),
     upsell_features: JSON.stringify({
         app_icon_picker: true,
         camera_roll: true,
@@ -96,6 +290,20 @@ Object.assign(obj.entries, {
     'lunar_new_year_app_icon_enabled': "true",
     'year_of_the_horse_icon_enabled': "true",
 });
+
+// ============================================================
+// FAKE GOLD (mo khoa Gold qua remote config)
+// ============================================================
+Object.assign(obj.entries, {
+    is_gold: "true",
+    is_gold_user: "true",
+    locket_gold_enabled: "true",
+    gold_enabled: "true",
+    purchases_entitlement: "Gold",
+    gold_badge_enabled: "true",
+    profile_badge_enabled: "true"
+});
+
 
 // ============================================================
 // 2. CHẶN QUẢNG CÁO & TẮT TRACKING (SENTRY)
@@ -174,29 +382,44 @@ Object.assign(obj.entries, {
         catch_up: true,
         widget_looping_mode: "never"
     }),
-    camera_filter_config: JSON.stringify({
-        allows_custom_filters: true,
-        show_filter_button: true,
-        sheet_enabled: true,
-        open_sheet_immediately: true,
-        sheet_filters: [
-            { title: { en: "Goofy" }, filter_ids: ["okay_wig", "influencer", "looks_maxxing", "toothless", "bye_brows"] },
-            { title: { en: "Looks" }, filter_ids: ["bowling_ball", "blonde_bleached", "beard", "bob_cut", "buns", "tatted", "mohawk", "braces", "bye_brows"] },
-            { title: { en: "Celebrate" }, filter_ids: ["slimed", "princess", "disco_lights", "cash_money", "happy_birthday"] },
-            { title: { en: "Cute" }, filter_ids: ["cutesy", "sticker_face", "flower_crown", "love_bug"] },
-            { title: { en: "Costumes" }, filter_ids: ["wedding", "cowboy_cowgirl", "giraffe", "clown"] },
-            { title: { en: "Holidays" }, filter_ids: ["easter_bunney_cutout", "easter_chick_cutout", "bearded", "leprechaun", "lucky_face", "sweet_hearts", "elf_cutout", "santa_cutout", "frosty"] }
-        ],
-        picker_filters: [
-            "okay_wig", "influencer", "looks_maxxing", "toothless", "bye_brows",
-            "bowling_ball", "blonde_bleached", "beard", "bob_cut", "buns",
-            "tatted", "mohawk", "braces", "slimed", "princess",
-            "disco_lights", "cash_money", "happy_birthday", "cutesy", "sticker_face",
-            "flower_crown", "love_bug", "wedding", "cowboy_cowgirl", "giraffe",
-            "clown", "easter_bunney_cutout", "easter_chick_cutout", "bearded", "leprechaun",
-            "lucky_face", "sweet_hearts", "elf_cutout", "santa_cutout", "frosty"
-        ]
-    }),
+    camera_filters_config: JSON.stringify(locketCameraFilterConfig),
+    camera_filter_config: JSON.stringify(locketCameraFilterConfig),
+    celebrity_camera_filter_config: JSON.stringify(locketCelebrityFilterConfig),
+    stickers_enabled: "true",
+    camera_filter_sheet: "true",
+    camera_filters_sheet: "true",
+    camera_filter_viewer: "true",
+    camera_filter_viewer_enabled: "true",
+    camera_filter_fetch_cache_max_age_seconds: "0",
+    camera_filters: "true",
+    camera_filter: "true",
+    camera_filters_enabled: "true",
+    camera_filter_enabled: "true",
+    enable_camera_filter: "true",
+    camera_filter_sheet_enabled: "true",
+    allowsCustomFilters: "true",
+    allows_custom_filters: "true",
+    camera_filter_upsell: "false",
+    camera_filters_upsell: "false",
+    ai_filter_upsell: "false",
+    camera_filter_requires_gold: "false",
+    camera_filter_gold: "false",
+    filter_upsell: "false",
+    filter_gold_upsell: "false",
+    filter_paywall_enabled: "false",
+    camera_filter_paywall: "false",
+    camera_filter_lock: "false",
+    camera_filter_locked: "false",
+    unlock_camera_filter: "true",
+    unlock_holiday_effects: "true",
+    unlock_all_filters: "true",
+    all_filters_free: "true",
+    all_filters_unlocked: "true",
+    camera_filter_free: "true",
+    camera_filters_free: "true",
+    camera_filter_unlocked: "true",
+    camera_filters_unlocked: "true",
+
     camera_roll_preview_enabled: "true",
     camera_roll_video_enabled: "true",
     camera_roll_video_upload_enabled: "true",
@@ -284,7 +507,6 @@ Object.assign(obj.entries, {
 });
 
 // ============================================================
-// ============================================================
 // 5. MOMENTS, STREAK, CHAT & TƯƠNG TÁC
 // ============================================================
 try {
@@ -340,22 +562,15 @@ Object.assign(obj.entries, {
     widget_last_sent_indicator: "false",
     widget_sync_token_reload_mode: "clearTokenNever",
 
-  widget_frame_event: JSON.stringify({
-        uid: "custom_frame_event_rotation",
-        // Lần lượt dán các link ảnh của bạn vào các mục url dưới đây
-        active_urls: [
-            "https://i.ibb.co/C5ZJt6yc/khung-gau-truc-trong-suot.png",
-            "https://i.ibb.co/TBXxJc0T/khung-ronaldo-cr7-trong-suot.png",
-            "https://i.ibb.co/RkWQF6mh/Khung-capybara-ne-n-trong-suo-t.png",
-            "https://i.ibb.co/84nB026Z/khung-hamster-trong-suot.png"
-        ],
-        url: "https://i.ibb.co/RkWQF6mh/Khung-capybara-ne-n-trong-suo-t.png", 
+    widget_frame_event: JSON.stringify({
+        uid: "custom_frame_event_2026",
+        url: "https://i.ibb.co/RkWQF6mh/Khung-capybara-ne-n-trong-suo-t.png",
         use_local_time_zone: true,
         placement: "below",
-        // Thiết lập thời gian vòng đời cho phép hiển thị khung
-        start_at: "2026-01-01T00:00:00",
-        end_at: "2026-12-31T23:59:59"
+        start_at: "2020-01-01T00:00:00",
+        end_at: "2099-12-31T23:59:59"
     }),
+
     custom_widget_frames: "enabled",
     custom_widget_frames_enabled: "true",
 
@@ -396,6 +611,14 @@ Object.assign(obj.entries, {
         "gold_luxury",
         "classic"
     ]),
+
+    seasonal_frames_config: JSON.stringify({
+        enabled: true,
+        auto_rotate: false,
+        override_default: true,
+        current_season_theme: "royal_gold_vip"
+    }),
+
     live_activity_onboarding: "true",
     live_activity_onboarding_variant: "friending",
     register_live_activity_push_to_start_token: "true",
@@ -429,7 +652,27 @@ Object.assign(obj.entries, {
     qr_code_config: JSON.stringify({ profile_enabled: true, scanning_enabled: true }),
     custom_profile_pics: "true",
     profile_menu_v2_enabled: "true"
-});
+       }),
+    Object.assign(obj.entries, {
+    'widget_frame_event_max_images': '5',
+    'android_widget_frame_event_enabled': 'true',
+    'widget_badge_enabled': 'true',
+    'widget_badge_v2': 'true',
+    'widget_stale_state_enabled': "false",
+    'widget_last_sent_indicator': "false",
+    'live_activity_onboarding': "true",
+    'live_activity_onboarding_variant': 'friending',
+    'register_live_activity_push_to_start_token': 'true',
+    'live_activity_remove_stale_start_token': 'true',
+    'notification_preferences_live_activities': "true",
+    'notification_preferences': "true",
+    'notification_reply_body_visible': "true",
+    'prompt_notification_permissions_after_friending': 'true',
+    'activity_bar_enabled': 'true',
+    'journal_activity_bar_enabled': "true",
+    'custom_profile_pics': "true",
+    'profile_menu_v2_enabled': 'true'
+  });
 // ============================================================
 // 7. HỆ THỐNG CDN, CACHE & STORAGE ĐẦY ĐỦ
 // ============================================================
@@ -3737,14 +3980,4 @@ Object.assign(obj.entries, {
 
 $done({
     body: JSON.stringify(obj)
-});`;
-
-export default {
-  async fetch(request) {
-    return new Response(config, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8"
-      }
-    });
-  }
-};
+});
