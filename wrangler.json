@@ -1,5 +1,15 @@
 {
-  "name": "lamvddconfig-worker",
-  "main": "LAMVDDCONFIG.js",
-  "compatibility_date": "2026-11-06"
+  "name": "locket-gold-capybara",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-06",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "locket_gold_db",
+      "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+    }
+  ],
+  "vars": {
+    "ADMIN_EMAIL": ""
+  }
 }
