@@ -33,7 +33,8 @@ export function b64ToBytes(b64) {
 }
 
 // ---------- Password hashing (PBKDF2-SHA256) ----------
-const PBKDF2_ITER = 120000;
+// Cloudflare Workers chỉ hỗ trợ tối đa 100.000 vòng PBKDF2
+const PBKDF2_ITER = 100000;
 
 export async function hashPassword(password) {
   const salt = crypto.getRandomValues(new Uint8Array(16));
